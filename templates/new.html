@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://andybrewer.github.io/mvp/mvp.css" rel="stylesheet"></link>
+</head>
+
+<body>
+    <header>
+        <h1>Nomad News</h1>
+        Order by: <a href="/search?order_by=pupular"><strong>Popular</strong></a>  | <strong>{{order_by}}</strong>
+      
+    </header>
+    <main>
+        {% for story in stories %}
+        
+            <!-- <form action="" method="get"> -->
+        <div>
+        <a href="/detail?item={{story.objectID}}">{{story.title}}</a>
+        (<a href={{story.url}} target="_blink">{{story.url}}</a>)
+        </div> 
+        <div>
+            {{story.points}} points | By: {{story.author}} | {{story.num_comments}} comments
+        </div>
+
+        <hr>
+        {% endfor %}
+    </main>
+</body>
+
+</html>
