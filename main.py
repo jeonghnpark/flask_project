@@ -2,19 +2,19 @@ import requests
 
 from flask import Flask, render_template, request, redirect
 
-base_url = "https://hn.algolia.com/api/v1"
+BASE_URL = "https://hn.algolia.com/api/v1"
 
 # This URL gets the newest stories.
-new = f"{base_url}/search_by_date?tags=story"
+NEW = f"{BASE_URL}/search_by_date?tags=story"
 
 # This URL gets the most popular stories
-popular = f"{base_url}/search?tags=story"
+POPULAR = f"{BASE_URL}/search?tags=story"
 
 
 # This function makes the URL to get the detail of a storie by id.
 # Heres the documentation: https://hn.algolia.com/api
 def make_detail_url(id):
-    return f"{base_url}/items/{id}"
+    return f"{BASE_URL}/items/{id}"
 
 
 db = {}
@@ -23,7 +23,7 @@ app = Flask("DayNine")
 @app.route("/search")
 def new():
     order = "new"
-    data = requests.get(new).json()
+    data = requests.get(NEW).json()
     # print(data['hits'])
     # for story in data['hits']:
     #     print(story['title'])
@@ -50,7 +50,7 @@ def detail():
 @app.route("/")
 def home():
     order = "popular"
-    data = requests.get(popular).json()
+    data = requests.get(POPULAR).json()
     # print(data['hits'])
     # for story in data['hits']:
     #     print(story['title'])
