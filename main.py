@@ -30,22 +30,28 @@ def new():
     # return render_template("index.html",order_by=order, data=data.get['hits'])
     return render_template("new.html", order_by=order, stories=data.get('hits'))
 
-@app.route("/detail")
-def detail():
-    item=request.args.get('item')
-    print(item)
-    url=f"https://hn.algolia.com/api/v1/items/{item}"
-    # url = make_detail_url(id)
-    # url=f"https://hn.algolia.com/api/v1/items/{item}"
-    # d=requests.get(make_detail_url(id)).json()['children']
-    d = requests.get(url).json()
-    # children=d['children']
-    # for child in d:
-    #     print(child['text'])
-    # return render_template("detail.html")
-    return render_template("detail.html", comments=d)
-    # return redirect("/")
+@app.route("/<id>")
+def detail(id):
+    url=f"https://hn.algolia.com/api/v1/items/{id}"
+    comments=requests.get(url).json()
+    return render_template("detail.html", comments=comments)
 
+# @app.route("/detail")
+# def detail():
+#     item=request.args.get('item')
+#     print(item)
+#     url=f"https://hn.algolia.com/api/v1/items/{item}"
+#     # url = make_detail_url(id)
+#     # url=f"https://hn.algolia.com/api/v1/items/{item}"
+#     # d=requests.get(make_detail_url(id)).json()['children']
+#     d = requests.get(url).json()
+#     # children=d['children']
+#     # for child in d:
+#     #     print(child['text'])
+#     # return render_template("detail.html")
+#     return render_template("detail.html", comments=d)
+#     # return redirect("/")
+#
 
 @app.route("/")
 def home():
