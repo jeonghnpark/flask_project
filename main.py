@@ -1,6 +1,6 @@
 import requests
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request
 
 BASE_URL = "https://hn.algolia.com/api/v1"
 
@@ -32,7 +32,8 @@ def new():
 
 @app.route("/<id>")
 def detail(id):
-    url=f"https://hn.algolia.com/api/v1/items/{id}"
+    # url=f"https://hn.algolia.com/api/v1/items/{id}"
+    url=make_detail_url(id)
     comments=requests.get(url).json()
     return render_template("detail.html", comments=comments)
 
@@ -55,13 +56,18 @@ def detail(id):
 
 @app.route("/")
 def home():
-    order = "popular"
-    data = requests.get(POPULAR).json()
-    # print(data['hits'])
-    # for story in data['hits']:
-    #     print(story['title'])
-    # return render_template("index.html",order_by=order, data=data.get['hits'])
-    return render_template("index.html", order_by=order, stories=data.get('hits'))
+    order_by = request.args.get('order_by', 'popular')
+    # order_by=request.args.get("order_by")
+
+    fromDB=db.get(order_by)
+    if fromDB is None:
+        if order_by=="popular":
+            result=requests.get(POPULAR).json()['hits']
+        elif order_by=="new":
+            result=requests.get(NEW).json()['hits']
+    else:
+        result=fromDB
+    return render_template("index.html", order_by=order_by, stories=result)
 
 
 app.run(host="localhost")
